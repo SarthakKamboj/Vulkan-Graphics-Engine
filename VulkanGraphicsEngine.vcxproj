@@ -155,17 +155,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ext\stb\stb_image.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="vulkanApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ext\stb\stb_image.h" />
     <ClInclude Include="vulkanApp.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SDL2.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="ext\vulkan\vulkan-1.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
