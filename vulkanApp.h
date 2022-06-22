@@ -5,6 +5,10 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <array>
+#include <string>
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/hash.hpp>
 
 #define DEBUG_MODE 1
 
@@ -18,38 +22,14 @@ class VulkanApp {
 public:
 	void run();
 
-private:
-
-	struct UniformBufferObject {
-		alignas(16) glm::mat4 model;
-		alignas(16) glm::mat4 view;
-		alignas(16) glm::mat4 proj;
-	};
-
-	struct SwapChainDetails {
-		VkSurfaceCapabilitiesKHR capabilities;
-		std::vector<VkSurfaceFormatKHR> formats;
-		std::vector<VkPresentModeKHR> presentModes;
-	};
-
-	struct QueueFamily {
-		uint32_t index;
-		bool exists = false;
-	};
-
-	struct QueueFamilies {
-		QueueFamily graphicsFamily;
-		QueueFamily presentFamily;
-
-		bool isComplete() {
-			return graphicsFamily.exists && presentFamily.exists;
-		}
-	};
-
 	struct Vertex {
 		glm::vec3 pos;
 		glm::vec3 color;
 		glm::vec2 texCoord;
+
+		bool operator==(const Vertex& other) const {
+			return pos == other.pos && color == other.color && texCoord == other.texCoord;
+		}
 
 		static VkVertexInputBindingDescription GetBindingDescription() {
 			VkVertexInputBindingDescription description{};
@@ -78,6 +58,34 @@ private:
 			attributeDescriptions[2].offset = offsetof(Vertex, texCoord);
 
 			return attributeDescriptions;
+		}
+	};
+
+private:
+
+	struct UniformBufferObject {
+		alignas(16) glm::mat4 model;
+		alignas(16) glm::mat4 view;
+		alignas(16) glm::mat4 proj;
+	};
+
+	struct SwapChainDetails {
+		VkSurfaceCapabilitiesKHR capabilities;
+		std::vector<VkSurfaceFormatKHR> formats;
+		std::vector<VkPresentModeKHR> presentModes;
+	};
+
+	struct QueueFamily {
+		uint32_t index;
+		bool exists = false;
+	};
+
+	struct QueueFamilies {
+		QueueFamily graphicsFamily;
+		QueueFamily presentFamily;
+
+		bool isComplete() {
+			return graphicsFamily.exists && presentFamily.exists;
 		}
 	};
 
@@ -125,18 +133,20 @@ private:
 	void createDescriptorPool();
 	void createDescriptorSets();
 	void createTextureImage();
-	void createImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
+	void createImage(uint32_t width, uint32_t height, uint32_t mipLevels, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
 	void endSingleTimeCommand(VkCommandBuffer& commandBuffer);
 	VkCommandBuffer beginSingleTimeCommand();
-	void transitionImageLayout(VkImage& image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
+	void transitionImageLayout(VkImage& image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, uint32_t mipLevels);
 	void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
 	void createTextureImageView();
-	VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
+	VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t mipLevels);
 	void createTextureSampler();
 	void createDepthResources();
 	VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
 	VkFormat findDepthFormat();
 	bool hasStencilComponent(VkFormat format);
+	void loadModel();
+	void generateMipmaps(VkImage image, VkFormat imageFormat, int32_t texWidth, int32_t texHeight, uint32_t mipLevels);
 
 	const char* validationLayers[1] = { "VK_LAYER_KHRONOS_validation" };
 	int numValidationLayers = 1;
@@ -185,6 +195,7 @@ private:
 	std::vector<VkBuffer> uniformBuffers;
 	std::vector<VkDeviceMemory> uniformBuffersMemory;
 	VkDescriptorPool descriptorPool;
+	uint32_t mipLevels;
 	VkImage textureImage;
 	VkDeviceMemory textureImageMemory;
 	VkImageView textureImageView;
@@ -193,8 +204,14 @@ private:
 	VkDeviceMemory depthImageMemory;
 	VkImageView depthImageView;
 
+	const uint32_t WIDTH = 800;
+	const uint32_t HEIGHT = 600;
+
+	const std::string MODEL_PATH = "assets/viking_room.obj";
+	const std::string TEXTURE_PATH = "assets/viking_room.png";
 	uint32_t currentFrame = 0;
 
+	/*
 	const std::vector<Vertex> vertices = {
 		{{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
 		{{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
@@ -210,5 +227,20 @@ private:
 	const std::vector<uint16_t> indices = {
 		0, 1, 2, 2, 3, 0,
 		4, 5, 6, 6, 7, 4
+	};
+	*/
+
+	std::vector<Vertex> vertices;
+	std::vector<uint32_t> indices;
+
+};
+
+namespace std {
+	template<> struct hash<VulkanApp::Vertex> {
+		size_t operator()(VulkanApp::Vertex const& vertex) const {
+			return ((hash<glm::vec3>()(vertex.pos) ^
+				(hash<glm::vec3>()(vertex.color) << 1)) >> 1) ^
+				(hash<glm::vec2>()(vertex.texCoord) << 1);
+		}
 	};
 };

@@ -89,7 +89,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)ext\SDL2\include;$(ProjectDir)ext\glad\include;$(ProejctDir)ext\glm;$(ProjectDir)ext\stb;$(SolutionDir)\FileLoader\src;$(ProjectDir)ext\imgui-docking;$(ProjectDir)ext\imgui-docking\backends;$(ProjectDir)src;$(ProjectDir)ext\vulkan\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)ext\SDL2\include;$(ProjectDir)ext\glad\include;$(ProejctDir)ext\glm;$(ProjectDir)ext\stb;$(SolutionDir)\FileLoader\src;$(ProjectDir)ext\imgui-docking;$(ProjectDir)ext\imgui-docking\backends;$(ProjectDir)src;$(ProjectDir)ext\vulkan\include;$(ProjectDir)ext\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,7 +107,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)ext\SDL2\include;$(ProjectDir)ext\glad\include;$(ProejctDir)ext\glm;$(ProjectDir)ext\stb;$(SolutionDir)\FileLoader\src;$(ProjectDir)ext\imgui-docking;$(ProjectDir)ext\imgui-docking\backends;$(ProjectDir)src;$(ProjectDir)ext\vulkan\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)ext\SDL2\include;$(ProjectDir)ext\glad\include;$(ProejctDir)ext\glm;$(ProjectDir)ext\stb;$(SolutionDir)\FileLoader\src;$(ProjectDir)ext\imgui-docking;$(ProjectDir)ext\imgui-docking\backends;$(ProjectDir)src;$(ProjectDir)ext\vulkan\include;$(ProjectDir)ext\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -125,7 +125,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)ext\SDL2\include;$(ProjectDir)ext\glad\include;$(ProejctDir)ext\glm;$(ProjectDir)ext\stb;$(SolutionDir)\FileLoader\src;$(ProjectDir)ext\imgui-docking;$(ProjectDir)ext\imgui-docking\backends;$(ProjectDir)src;$(ProjectDir)ext\vulkan\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)ext\SDL2\include;$(ProjectDir)ext\glad\include;$(ProejctDir)ext\glm;$(ProjectDir)ext\stb;$(SolutionDir)\FileLoader\src;$(ProjectDir)ext\imgui-docking;$(ProjectDir)ext\imgui-docking\backends;$(ProjectDir)src;$(ProjectDir)ext\vulkan\include;$(ProjectDir)ext\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,7 +143,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)ext\SDL2\include;$(ProjectDir)ext\glad\include;$(ProejctDir)ext\glm;$(ProjectDir)ext\stb;$(SolutionDir)\FileLoader\src;$(ProjectDir)ext\imgui-docking;$(ProjectDir)ext\imgui-docking\backends;$(ProjectDir)src;$(ProjectDir)ext\vulkan\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)ext\SDL2\include;$(ProjectDir)ext\glad\include;$(ProejctDir)ext\glm;$(ProjectDir)ext\stb;$(SolutionDir)\FileLoader\src;$(ProjectDir)ext\imgui-docking;$(ProjectDir)ext\imgui-docking\backends;$(ProjectDir)src;$(ProjectDir)ext\vulkan\include;$(ProjectDir)ext\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,11 +156,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ext\stb\stb_image.cpp" />
+    <ClCompile Include="ext\tinyobjloader\tiny_obj_loader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="vulkanApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\stb\stb_image.h" />
+    <ClInclude Include="ext\tinyobjloader\tiny_obj_loader.h" />
     <ClInclude Include="vulkanApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
