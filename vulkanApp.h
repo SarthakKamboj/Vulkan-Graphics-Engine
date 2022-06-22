@@ -133,7 +133,8 @@ private:
 	void createDescriptorPool();
 	void createDescriptorSets();
 	void createTextureImage();
-	void createImage(uint32_t width, uint32_t height, uint32_t mipLevels, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
+	void createImage(uint32_t width, uint32_t height, uint32_t mipLevels, VkSampleCountFlagBits numSamples, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
+	void createColorResources();
 	void endSingleTimeCommand(VkCommandBuffer& commandBuffer);
 	VkCommandBuffer beginSingleTimeCommand();
 	void transitionImageLayout(VkImage& image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, uint32_t mipLevels);
@@ -147,6 +148,7 @@ private:
 	bool hasStencilComponent(VkFormat format);
 	void loadModel();
 	void generateMipmaps(VkImage image, VkFormat imageFormat, int32_t texWidth, int32_t texHeight, uint32_t mipLevels);
+	VkSampleCountFlagBits getMaxUsableSampleCount();
 
 	const char* validationLayers[1] = { "VK_LAYER_KHRONOS_validation" };
 	int numValidationLayers = 1;
@@ -203,6 +205,10 @@ private:
 	VkImage depthImage;
 	VkDeviceMemory depthImageMemory;
 	VkImageView depthImageView;
+	VkSampleCountFlagBits msaaSamples = VK_SAMPLE_COUNT_1_BIT;
+	VkImage colorImage;
+	VkDeviceMemory colorImageMemory;
+	VkImageView colorImageView;
 
 	const uint32_t WIDTH = 800;
 	const uint32_t HEIGHT = 600;
